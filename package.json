@@ -1,0 +1,56 @@
+{
+  "name": "pickem",
+  "version": "1.0.7",
+  "description": "Usage-sorted searchable autocomplete for CLI tools",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "CHANGELOG.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/calebogden/pickem-oss.git"
+  },
+  "bugs": {
+    "url": "https://github.com/calebogden/pickem-oss/issues"
+  },
+  "homepage": "https://github.com/calebogden/pickem-oss#readme",
+  "author": "Caleb Ogden <co@ogden.co>",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "node scripts/build.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "cli",
+    "autocomplete",
+    "interactive",
+    "usage-sorted",
+    "searchable",
+    "picker",
+    "wizard"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.5.0",
+    "vitest": "^2.0.0"
+  }
+}
