@@ -1,0 +1,37 @@
+name: Publish
+
+# Publishes to npm with provenance via OIDC Trusted Publishing.
+# One-time setup on npmjs.com: package "pickem" → Settings → Trusted Publisher →
+#   GitHub repo: calebogden/pickem-oss, workflow: publish.yml
+# No NPM_TOKEN secret is needed once the trusted publisher is configured.
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write # required for OIDC provenance / trusted publishing
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24 # bundles npm 11.x natively (OIDC needs >= 11.5.1)
+          cache: npm
+      # Do NOT set registry-url — it writes an .npmrc with an empty NODE_AUTH_TOKEN
+      # that shadows OIDC trusted-publishing auth. Upgrade npm as a belt, then print
+      # the version so the log proves we're >= 11.5.1 before publishing.
+      - run: npm install -g npm@latest
+      - run: npm -v
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+      # publishConfig + build emit dist/ as the package root; publish from there.
+      - run: npm publish --provenance --access public
+        working-directory: dist
